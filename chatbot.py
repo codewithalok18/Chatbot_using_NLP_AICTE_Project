@@ -1,3 +1,4 @@
+
 import os
 import json
 import datetime
@@ -47,17 +48,15 @@ counter = 0
 
 def main():
     global counter
-    st.title("Implementation of Chatbot using NLP")
+    st.markdown("<h1 style='text-align: center; color: #4CAF50;'>Implementation Of Chatbot with NLP</h1>", unsafe_allow_html=True)
 
-    # Create a sidebar menu with options
+    # Sidebar menu
     menu = ["Home", "Conversation History", "About"]
     choice = st.sidebar.selectbox("Menu", menu)
 
-    # Home Menu
     if choice == "Home":
-        st.write("Welcome to the chatbot. Please type a message and press Enter to start the conversation.")
+        st.markdown("<p style='text-align: center; color: #555;'>Welcome to the chatbot! Start chatting below.</p>", unsafe_allow_html=True)
 
-        # Check if the chat_log.csv file exists, and if not, create it with column names
         if not os.path.exists('chat_log.csv'):
             with open('chat_log.csv', 'w', newline='', encoding='utf-8') as csvfile:
                 csv_writer = csv.writer(csvfile)
@@ -67,66 +66,42 @@ def main():
         user_input = st.text_input("You:", key=f"user_input_{counter}")
 
         if user_input:
-
-            # Convert the user input to a string
             user_input_str = str(user_input)
-
             response = chatbot(user_input)
-            st.text_area("Chatbot:", value=response, height=120, max_chars=None, key=f"chatbot_response_{counter}")
+            st.markdown(f"<div style='background-color:#8507e8 ; padding:10px; border-radius:10px;'>{response}</div>", unsafe_allow_html=True)
 
-            # Get the current timestamp
             timestamp = datetime.datetime.now().strftime(f"%Y-%m-%d %H:%M:%S")
 
-            # Save the user input and chatbot response to the chat_log.csv file
             with open('chat_log.csv', 'a', newline='', encoding='utf-8') as csvfile:
                 csv_writer = csv.writer(csvfile)
                 csv_writer.writerow([user_input_str, response, timestamp])
 
             if response.lower() in ['goodbye', 'bye']:
-                st.write("Thank you for chatting with me. Have a great day!")
+                st.markdown("<p style='text-align: center; color: #FF5733;'>Thank you for chatting! Have a great day!</p>", unsafe_allow_html=True)
                 st.stop()
 
-    # Conversation History Menu
     elif choice == "Conversation History":
-        # Display the conversation history in a collapsible expander
-        st.header("Conversation History")
-        # with st.beta_expander("Click to see Conversation History"):
+        st.markdown("<h2 style='color: #3358ff;'>Conversation History</h2>", unsafe_allow_html=True)
         with open('chat_log.csv', 'r', encoding='utf-8') as csvfile:
             csv_reader = csv.reader(csvfile)
-            next(csv_reader)  # Skip the header row
+            next(csv_reader)
             for row in csv_reader:
-                st.text(f"User: {row[0]}")
-                st.text(f"Chatbot: {row[1]}")
-                st.text(f"Timestamp: {row[2]}")
+                st.markdown(f"<div style='background-color:#ff5733; padding:5px; border-radius:5px;'><b>User:</b> {row[0]}<br><b>Chatbot:</b> {row[1]}<br><b>Timestamp:</b> {row[2]}</div>", unsafe_allow_html=True)
                 st.markdown("---")
 
     elif choice == "About":
-        st.write("The goal of this project is to create a chatbot that can understand and respond to user input based on intents. The chatbot is built using Natural Language Processing (NLP) library and Logistic Regression, to extract the intents and entities from user input. The chatbot is built using Streamlit, a Python library for building interactive web applications.")
+        st.markdown("<h2 style='color: #e807c9 ;'>About the Project</h2>", unsafe_allow_html=True)
+        st.write("The goal of this project is to create a chatbot that can understand and respond to user input based on intents. The chatbot is built using NLP techniques and Logistic Regression for accurate response generation.")
+        st.markdown("<h3>Project Overview:</h3>", unsafe_allow_html=True)
+        st.write("- NLP techniques and Logistic Regression are used for training.")
+        st.write("- Streamlit web framework is used for building the interface.")
 
-        st.subheader("Project Overview:")
+        st.markdown("<h3>Dataset:</h3>", unsafe_allow_html=True)
+        st.write("The dataset contains intents with multiple patterns and responses.")
 
-        st.write("""
-        The project is divided into two parts:
-        1. NLP techniques and Logistic Regression algorithm is used to train the chatbot on labeled intents and entities.
-        2. For building the Chatbot interface, Streamlit web framework is used to build a web-based chatbot interface. The interface allows users to input text and receive responses from the chatbot.
-        """)
-
-        st.subheader("Dataset:")
-
-        st.write("""
-        The dataset used in this project is a collection of labelled intents and entities. The data is stored in a list.
-        - Intents: The intent of the user input (e.g. "greeting", "budget", "about")
-        - Entities: The entities extracted from user input (e.g. "Hi", "How do I create a budget?", "What is your purpose?")
-        - Text: The user input text.
-        """)
-
-        st.subheader("Streamlit Chatbot Interface:")
-
-        st.write("The chatbot interface is built using Streamlit. The interface includes a text input box for users to input their text and a chat window to display the chatbot's responses. The interface uses the trained model to generate responses to user input.")
-
-        st.subheader("Conclusion:")
-
-        st.write("In this project, a chatbot is built that can understand and respond to user input based on intents. The chatbot was trained using NLP and Logistic Regression, and the interface was built using Streamlit. This project can be extended by adding more data, using more sophisticated NLP techniques, deep learning algorithms.")
+        st.markdown("<h3>Conclusion:</h3>", unsafe_allow_html=True)
+        st.write("This chatbot can be extended using more sophisticated NLP techniques or deep learning models for improved responses.")
 
 if __name__ == '__main__':
     main()
+
